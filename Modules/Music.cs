@@ -48,7 +48,19 @@ namespace ButlerBot.Modules
         [Command("Play")]
         [Alias("p","P","play")]
         public async Task Play([Remainder]string query)
-            => await ReplyAsync(await _musicService.PlayAsync(query, Context.Guild.Id));
+        {
+             var user = Context.User as SocketGuildUser;
+                if (Context.Channel != user.VoiceChannel)
+                {   
+                    await _musicService.ConnectAsync(user.VoiceChannel, Context.Channel as ITextChannel);
+                    await ReplyAsync(await _musicService.PlayAsync(query, Context.Guild.Id));
+                }
+                else
+                {   
+                    await ReplyAsync(await _musicService.PlayAsync(query, Context.Guild.Id));
+                }
+        }
+
 
 
         [Command("Stop")]
