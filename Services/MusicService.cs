@@ -1,6 +1,7 @@
 using Discord;
 using Discord.WebSocket;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Victoria;
 using Victoria.Entities;
@@ -41,6 +42,7 @@ namespace ButlerBot.Services
         {
             var _player = _lavaSocketClient.GetPlayer(guildId);
             var results = await _lavaRestClient.SearchYouTubeAsync(query);
+
 
             if (results.LoadType == LoadType.NoMatches || results.LoadType == LoadType.LoadFailed)
             {
@@ -129,6 +131,21 @@ namespace ButlerBot.Services
             return "Player is not paused.";
         }
 
+        int count;
+        public async Task<string> QueueAsync(ulong guildId)
+        {
+            count=0;
+            var _player = _lavaSocketClient.GetPlayer(guildId);
+            var sb = new StringBuilder();
+
+            await _player.ResumeAsync();
+            foreach (var item in _player.Queue.Items)
+            {
+                sb.AppendLine(item.ToString());
+                count++;
+            }
+            return sb.ToString();
+        }
 
         private async Task ClientReadyAsync()
         {

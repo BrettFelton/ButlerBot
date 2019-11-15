@@ -3,15 +3,29 @@ using Discord.Commands;
 using Discord.WebSocket;
 using ButlerBot.Services;
 using System.Threading.Tasks;
+using System.Text;
+
 namespace ButlerBot.Modules
 {
-    public class Music : ModuleBase<SocketCommandContext>
+    public class MusicCommands : ModuleBase<SocketCommandContext>
     {
         private MusicService _musicService;
 
-        public Music(MusicService musicService)
+        public MusicCommands(MusicService musicService)
         {
             _musicService = musicService;
+        }
+
+        [Command("Help")]
+        public async Task HelpCommand()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("Hello ");
+            sb.AppendLine("Go Fuck Yourself!!");
+            sb.AppendLine("");
+            sb.AppendLine("No but seriously use .p to play music");
+            sb.AppendLine("If you dont know what else to do then should you really be here?");
+            await ReplyAsync(sb.ToString());
         }
 
         [Command("Join")]
@@ -82,5 +96,10 @@ namespace ButlerBot.Modules
         [Command("Resume")]
         public async Task Resume()
             => await ReplyAsync(await _musicService.ResumeAsync(Context.Guild.Id));
+
+        [Command("Queue")]
+        [Alias("q")] 
+        public async Task Queue()
+            => await ReplyAsync(await _musicService.QueueAsync(Context.Guild.Id));
     }
 }

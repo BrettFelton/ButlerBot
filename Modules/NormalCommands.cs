@@ -13,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 namespace ButlerBot.Modules
 {
     // for commands to be available, and have the Context passed to them, we must inherit ModuleBase
-    public class ExampleCommands : ModuleBase
+    public class NormalCommands : ModuleBase
     {
 
         [Command("hello")]
@@ -26,8 +26,8 @@ namespace ButlerBot.Modules
             var user = Context.User.Username;
             
             // build out the reply
-            sb.AppendLine($"You are -> [" + user.ToString() + "]");
-            sb.AppendLine("I must now say, World!");
+            sb.AppendLine("Hello " + user.ToString());
+            sb.AppendLine("Go Fuck Yourself " + user.ToString());
 
             // send simple string reply
             await ReplyAsync(sb.ToString());
