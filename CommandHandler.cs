@@ -20,6 +20,7 @@ namespace ButlerBot.Services
             _client = client;
             _cmdService = cmdService;
             _services = services;
+       
         }
 
         public async Task InitializeAsync()
@@ -38,7 +39,12 @@ namespace ButlerBot.Services
             if (userMessage is null)
                 return;
 
-            if (!userMessage.HasMentionPrefix(_client.CurrentUser, ref argPos))
+            // get prefix from the configuration file
+            char prefix = '.';
+            
+            //determine if the message has a valid prefix, and adjust argPos based on prefix
+            if (!(userMessage.HasMentionPrefix(_client.CurrentUser, ref argPos) || 
+            userMessage.HasCharPrefix(prefix, ref argPos)))
                 return;
 
             var context = new SocketCommandContext(_client, userMessage);
